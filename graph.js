@@ -45,7 +45,7 @@ function matrixBfs(grid){
    }
 }
 
-function adjacencyList(node,target,grid,visit){
+function adjacencyListDFS(node,target,grid,visit){
     if(visit.has(node)){
         return 0;
     }
@@ -56,8 +56,33 @@ function adjacencyList(node,target,grid,visit){
     visit = new Set();
     visit.add(node);
     for(let neighbor of grid.get(node)){
-        count += adjacencyList(neighbor,target,grid, visit);
+        count += adjacencyListDFS(neighbor,target,grid, visit);
     }
     visit.delete(node);
     return count;
+}
+
+function adjacencyListBFS(node, target, grid){
+    let length = 0;
+    let visit = new Set();
+    let q = [];
+    visit.add(node);
+    q.push(node);
+    while(q.length!=0){
+        let queueLength = q.length;
+        for(let i=0; i< queueLength; i++){
+            let curr = q.shift();
+            if(curr == target){
+                return length;
+            }
+            for(let neighbor of grid.get(curr)){
+                if(!visit.has(neighbor)){
+                    visit.add(neighbor);
+                    q.push(neighbor);
+                }
+            }
+        }
+        length++;
+    }
+    return length;
 }
